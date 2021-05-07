@@ -19,16 +19,16 @@ function Class(name)
 		new StringValue('Название маны', 'mana', '&2Мана').setTooltip('Изменяет название "Мана" на любое выбранное, например "Энергия".'),
 		new IntValue('Макс.Уровень', 'max-level', 40).setTooltip('Максимальный уровень который может быть получен классом. Если этот класс является родительским для другого класса, то игрок сможет взять следующую класс по достижению этого уровня. Например класс этот класс является родительским для класса Воин, значит по достижению 40 уровня этого класса игрок сможет взять класс Воина.'),
 		new ListValue('Родительский класс', 'parent', ['Нет'], 'Нет').setTooltip('По достижению максимального уровня родительского класса, игрок сможет взять этот класс. (Прочтите описание "макс.ур" для подробностей)'),
-		new ListValue('Необходимо право', 'needs-permission', ['True', 'False'], 'False').setTooltip('Определяет нужно ли игроку иметь отдельное право для этого класса чтобы выбрать его. Право выглядит так: "skillapi.class.{className}", Где {className] - Имя класса'),
-    new ByteListValue('Источники опыта', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('Источники с которых данный класс получает опыт. Многие работают только если "use-exp-orbs" включён в config.yml.'),
+		new ListValue('Необходимо право', 'needs-permission', ['true', 'false'], 'false').setTooltip('Определяет нужно ли игроку иметь отдельное право для этого класса чтобы выбрать его. Право выглядит так: "skillapi.class.{className}", Где {className] - Имя класса'),
+   		new ByteListValue('Источники опыта', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('Источники с которых данный класс получает опыт. Многие работают только если "use-exp-orbs" включён в config.yml.'),
 		new AttributeValue('Нач. Кол-во ХП', 'health', 20, 0).setTooltip('Начальное количество жизней класса'),
 		new AttributeValue('Нач Кол-во МП', 'mana', 20, 0).setTooltip('Начальное количество маны класса'),
 		new DoubleValue('Регенерация маны', 'mana-regen', 1, 0).setTooltip('Количество маны восстанавливаемое за каждый тик регенерации. Базовый интервал указан в config.yml и по умолчанию имеет 1 секунду. Вы можете указывать десятые и сотые доли в Scale на которые будет увеличиваться регенерация каждый уровень.'),
 		new ListValue('Тип Древа скиллов', 'tree', [ 'Basic Horizontal', 'Basic Vertical', 'Level Horizontal', 'Level Vertical', 'Flood', 'Requirement' ], 'Requirement'),
-		new StringListValue('Skills (one per line)', 'skills', []).setTooltip('The skills the class is able to use'),
-		new ListValue('Icon', 'icon', getMaterials, 'Jack O Lantern').setTooltip('Предмет который будет отображаться в GUI для этого класса'),
+		new StringListValue('Список скиллов', 'skills', []).setTooltip('Скиллы которые будут в древе скиллов у этого класса (Одно название скилла в одну линию)'),
+		new ListValue('Предмет', 'icon', getMaterials, 'Jack O Lantern').setTooltip('Предмет который будет отображаться в GUI для этого класса'),
 		new IntValue('Модель/Прочность', 'icon-data', 0).setTooltip('Определяет модель (CustomModelData 1.14+) или прочность (<1.13) для иконки отображаемой в GUI'),
-		new StringListValue('Icon Lore', 'icon-lore', [
+		new StringListValue('Описание предмета', 'icon-lore', [
 			'&d' + name
 		]),
 		new StringListValue('Ограниченные предметы', 'blacklist', [ ]).setTooltip('Типы предметов которые класс не может использовать (Один тип в одну линию)'),
@@ -54,7 +54,7 @@ Class.prototype.updateAttribs = function(i)
         var attrib = ATTRIBS[j].toLowerCase();
         var format = attrib.charAt(0).toUpperCase() + attrib.substr(1);
         this.data.splice(i + j, 0, new AttributeValue(format, attrib.toLowerCase(), 0, 0)
-            .setTooltip('The amount of ' + attrib + ' the class should have')
+            .setTooltip('Начальное количество атрибута ' + attrib + ' которое будет у этого класса')
         );
         if (back[attrib]) 
         {
@@ -75,7 +75,7 @@ Class.prototype.createFormHTML = function()
 	var form = document.createElement('form');
 	
 	var header = document.createElement('h4');
-	header.innerHTML = 'Class Details';
+	header.innerHTML = 'Детали класса';
 	form.appendChild(header);
 	
 	var h = document.createElement('hr');
@@ -94,11 +94,11 @@ Class.prototype.createFormHTML = function()
 		this.data[i].createHTML(form);
         
         // Append attributes
-        if (this.data[i].name == 'Mana')
+        if (this.data[i].name == 'Нач Кол-во МП')
         {
             var dragInstructions = document.createElement('label');
             dragInstructions.id = 'attribute-label';
-            dragInstructions.innerHTML = 'Drag/Drop your attributes.yml file to see custom attributes';
+            dragInstructions.innerHTML = 'Перетяните свой файл attributes.yml в это окно чтобы поменять атрибуты на ваш список';
             form.appendChild(dragInstructions);
             this.updateAttribs(i + 1);
         }
@@ -108,7 +108,7 @@ Class.prototype.createFormHTML = function()
 	form.appendChild(hr);
 	
 	var save = document.createElement('h5');
-	save.innerHTML = 'Save Class',
+	save.innerHTML = 'Сохранить класс',
 	save.classData = this;
 	save.addEventListener('click', function(e) {
 		this.classData.update();
@@ -117,7 +117,7 @@ Class.prototype.createFormHTML = function()
 	form.appendChild(save);
 	
 	var del = document.createElement('h5');
-	del.innerHTML = 'Delete',
+	del.innerHTML = 'Удалить',
 	del.className = 'cancelButton';
 	del.addEventListener('click', function(e) {
 		var list = document.getElementById('classList');
@@ -208,9 +208,9 @@ Class.prototype.load = loadSection;
 function newClass()
 {
 	var id = 1;
-	while (isClassNameTaken('Class ' + id)) id++;
+	while (isClassNameTaken('Класс ' + id)) id++;
 	
-	activeClass = addClass('Class ' + id);
+	activeClass = addClass('Класс ' + id);
 	
 	var list = document.getElementById('classList');
 	list.selectedIndex = list.length - 2;
@@ -269,6 +269,6 @@ function getClass(name)
 	return null;
 }
 
-var activeClass = new Class('Class 1');
+var activeClass = new Class('Класс 1');
 var classes = [activeClass];
 activeClass.createFormHTML();
