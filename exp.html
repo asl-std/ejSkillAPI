@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SkillAPI Experience Formula Tool</title>
+
+<style>
+* {
+	padding: 0;
+	margin: 0;
+}
+
+html {
+	height: 100%;
+}
+	
+body {
+	background-color: black;
+	color: white;
+	height: 100%;
+	overflow: hidden;
+}
+
+a, a:visited {
+	position: absolute;
+	top: 250px;
+	width: 238px;
+	right: 0;
+	background-color: #333;
+	border: 3px solid #666;
+	border-radius: 10px;
+	padding: 5px;
+	margin: 5px;
+	color: #00AAFF;
+	text-align: center;
+	font-size: 24px;
+	text-decoration: none;
+}
+
+h2 {
+	margin-bottom: 10px;
+}
+
+h3 {
+	margin-bottom: 10px;
+}
+
+form {
+	position: absolute;
+	top: 0;
+	right: 10px;
+	border-left: 3px solid #666;
+	border-bottom: 3px solid #666;
+	padding-left: 10px;
+}
+
+label {
+	display: inline-block;
+	width: 30px;
+	font-size: 24px;
+	margin-bottom: 5px;
+}
+
+section {
+	width: calc(100% - 275px);
+	border: 1px solid #666;
+	height: calc(100% - 10px);
+	margin: 5px;
+	margin-bottom: 0;
+}
+
+span {
+	display: inline-block;
+	padding: 2px 0;
+}
+
+.left {
+	width: 7%;
+	border: 1px solid #666;
+	background-color: #333;
+	text-align: center;
+}
+
+.right {
+	width: calc(18% - 9px);
+	border: 1px solid #666;
+	padding-left: 5px;
+}
+
+@media screen and (min-width: 980px) {
+	.left {
+		width: 6%;
+	}
+	.right {
+		width: calc(14% - 9px);
+	}
+}
+
+@media screen and (min-width: 1800px) {
+	.left {
+		width: 3%;
+	}
+	.right {
+		width: calc(7% - 9px);
+	}
+}
+
+@media screen and (max-width: 650px) {
+	.left {
+		width: 10%;
+	}
+	.right {
+		width: calc(23% - 9px);
+	}
+}
+
+@media screen and (max-width: 550px) {
+	.left {
+		width: 15%;
+	}
+	.right {
+		width: calc(35% - 9px);
+	}
+}
+
+@media screen and (max-width: 450px) {
+	.left {
+		width: 30%;
+	}
+	.right {
+		width: calc(70% - 9px);
+	}
+}
+</style>
+
+<script>
+    
+        function update() {
+            let section = document.querySelector('section');
+            while (section.hasChildNodes()) {
+                section.removeChild(section.lastChild);
+            }
+            
+            let x = parseInt(document.querySelector('#x').value);
+            let y = parseInt(document.querySelector('#y').value);
+            let z = parseInt(document.querySelector('#z').value);
+            let w = parseInt(document.querySelector('#w').value);
+            
+            let summ = 0;
+            let tier = 0;
+            let tiersSummary = 0;
+            
+            for (let i = 1; i <= 120; i++) {
+                let left = document.createElement('span');
+                let right = document.createElement('span');
+                left.className = 'left';
+                right.className = 'right';
+                left.innerHTML = i;
+                right.innerHTML = x * (i + y) * (i + y) + z * i + w;
+                section.appendChild(left);
+                section.appendChild(right);
+                summ += x * (i + y) * (i + y) + z * i + w;
+                tiersSummary += x * (i + y) * (i + y) + z * i + w;
+                
+                if (i == 20 || i == 40 || i == 80 || i == 120) {
+                    section.appendChild(document.createElement('br'));
+                    let summLabel = document.createElement('span');
+                    let summValue = document.createElement('span');
+                    summLabel.className = 'left';
+                    summValue.className = 'right';
+                    summLabel.innerHTML = 'Тир: ' + tier; 
+                    summValue.innerHTML = 'Суммарно: ' +  summ;
+                    section.appendChild(summLabel);
+                    section.appendChild(summValue);
+                    section.appendChild(document.createElement('br'));
+                    section.appendChild(document.createElement('br'));
+                    summ = 0;
+                    tier++;
+                }
+            }
+            
+            let summLabel = document.createElement('span');
+            let summValue = document.createElement('span');
+            summLabel.className = 'left';
+            summValue.className = 'right';
+            summLabel.innerHTML = 'ВСЕ:'; 
+            summValue.innerHTML = 'Суммарно: ' +  (tiersSummary);
+            section.appendChild(summLabel);
+            section.appendChild(summValue);
+
+        }
+        
+        window.onload = function() {
+            let inputs = document.querySelectorAll('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', update);
+            }
+            update();
+        }
+        
+    </script>
+</head>
+<body>
+	<form>
+		<h1>SkillAPI</h1>
+		<h2>Exp Formula Tool</h2>
+		<h3>
+			Exp = x*(lvl + y)<sup>2</sup> + z*lvl + w
+		</h3>
+
+		<label>x</label> <input type="number" id="x" value="25"> <br />
+
+		<label>y</label> <input type="number" id="y" value="10"> <br />
+
+		<label>z</label> <input type="number" id="z" value="325"> <br />
+
+		<label>w</label> <input type="number" id="w" value="-2350"> <br />
+	</form>
+	<a href="http://dev.bukkit.org/bukkit-plugins/skillapi/">Back to
+		BukkitDev</a>
+
+	<section></section>
+</body>
+</html>
