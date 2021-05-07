@@ -13,14 +13,14 @@ function Class(name)
 	
 	// Class data
 	this.data = [
-		new StringValue('Name', 'name', name).setTooltip('The name of the class. This should not contain color codes'),
-		new StringValue('Prefix', 'prefix', '&6' + name).setTooltip('The prefix given to players who profess as the class which can contain color codes'),
-		new StringValue('Group', 'group', 'class').setTooltip('A class group are things such as "race", "class", and "trade". Different groups can be professed through at the same time, one class from each group'),
-		new StringValue('Mana Name', 'mana', '&2Mana').setTooltip('The name the class uses for mana'),
-		new IntValue('Max Level', 'max-level', 40).setTooltip('The maximum level the class can reach. If this class turns into other classes, this will also be the level it can profess into those classes.'),
-		new ListValue('Parent', 'parent', ['None'], 'None').setTooltip('The class that turns into this one. For example, if Fighter turns into Knight, then Knight would have its parent as Fighter'),
+		new StringValue('Имя класса', 'name', name).setTooltip('Имя класса, не должно содержать цветовых кодов.'),
+		new StringValue('Префикс', 'prefix', '&6' + name).setTooltip('Префикс, который получит игрок при выборе класса, поддерживает цветовые кода'),
+		new StringValue('Группа', 'group', 'class').setTooltip('Классовая группа, игрок может иметь по одному классу в возможных группах, рекомендовано разделять на группы "class" и "race"'),
+		new StringValue('Название маны', 'mana', '&2Mana').setTooltip('Изменяет название "Мана" на любое выбранное, например "Энергия", не должно содержать цветовых кодов'),
+		new IntValue('Макс.Уровень', 'max-level', 40).setTooltip('Максимальный уровень который может быть получен классом. Если этот класс является родительским для другого класса, то игрок сможет взять следующую класс по достижению этого уровня.\nНапример класс этот класс является родительским для класса Воин, значит по достижению 40 уровня этого класса игрок сможет взять класс Воина.'),
+		new ListValue('Родительский класс', 'parent', ['None'], 'None').setTooltip('По достижению максимального уровня родительского класса, игрок сможет взять этот класс. (Прочтите описание "макс.ур" для подробностей)'),
 		new ListValue('Permission', 'needs-permission', ['True', 'False'], 'False').setTooltip('Whether or not the class requires a permission to be professed as. The permission would be "skillapi.class.{className}"'),
-        new ByteListValue('Exp Sources', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('The experience sources the class goes up from. Most of these only work if "use-exp-orbs" is enabled in the config.yml.'),
+    new ByteListValue('Exp Sources', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('The experience sources the class goes up from. Most of these only work if "use-exp-orbs" is enabled in the config.yml.'),
 		new AttributeValue('Health', 'health', 20, 0).setTooltip('The amount of health the class has'),
 		new AttributeValue('Mana', 'mana', 20, 0).setTooltip('The amount of mana the class has'),
 		new DoubleValue('Mana Regen', 'mana-regen', 1, 0).setTooltip('The amount of mana the class regens each interval. The interval is in the config.yml and by default is once every second. If you want to regen a decimal amount per second, increase the interval.'),
