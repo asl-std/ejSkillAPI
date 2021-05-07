@@ -16,23 +16,23 @@ function Class(name)
 		new StringValue('Имя класса', 'name', name).setTooltip('Имя класса, не должно содержать цветовых кодов.'),
 		new StringValue('Префикс', 'prefix', '&6' + name).setTooltip('Префикс, который получит игрок при выборе класса, поддерживает цветовые кода'),
 		new StringValue('Группа', 'group', 'class').setTooltip('Классовая группа, игрок может иметь по одному классу в возможных группах, рекомендовано разделять на группы "class" и "race"'),
-		new StringValue('Название маны', 'mana', '&2Mana').setTooltip('Изменяет название "Мана" на любое выбранное, например "Энергия", не должно содержать цветовых кодов'),
-		new IntValue('Макс.Уровень', 'max-level', 40).setTooltip('Максимальный уровень который может быть получен классом. Если этот класс является родительским для другого класса, то игрок сможет взять следующую класс по достижению этого уровня.\nНапример класс этот класс является родительским для класса Воин, значит по достижению 40 уровня этого класса игрок сможет взять класс Воина.'),
-		new ListValue('Родительский класс', 'parent', ['None'], 'None').setTooltip('По достижению максимального уровня родительского класса, игрок сможет взять этот класс. (Прочтите описание "макс.ур" для подробностей)'),
-		new ListValue('Permission', 'needs-permission', ['True', 'False'], 'False').setTooltip('Whether or not the class requires a permission to be professed as. The permission would be "skillapi.class.{className}"'),
-    new ByteListValue('Exp Sources', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('The experience sources the class goes up from. Most of these only work if "use-exp-orbs" is enabled in the config.yml.'),
-		new AttributeValue('Health', 'health', 20, 0).setTooltip('The amount of health the class has'),
-		new AttributeValue('Mana', 'mana', 20, 0).setTooltip('The amount of mana the class has'),
-		new DoubleValue('Mana Regen', 'mana-regen', 1, 0).setTooltip('The amount of mana the class regens each interval. The interval is in the config.yml and by default is once every second. If you want to regen a decimal amount per second, increase the interval.'),
-		new ListValue('Skill Tree', 'tree', [ 'Basic Horizontal', 'Basic Vertical', 'Level Horizontal', 'Level Vertical', 'Flood', 'Requirement' ], 'Requirement'),
+		new StringValue('Название маны', 'mana', '&2Мана').setTooltip('Изменяет название "Мана" на любое выбранное, например "Энергия".'),
+		new IntValue('Макс.Уровень', 'max-level', 40).setTooltip('Максимальный уровень который может быть получен классом. Если этот класс является родительским для другого класса, то игрок сможет взять следующую класс по достижению этого уровня. Например класс этот класс является родительским для класса Воин, значит по достижению 40 уровня этого класса игрок сможет взять класс Воина.'),
+		new ListValue('Родительский класс', 'parent', ['Нет'], 'Нет').setTooltip('По достижению максимального уровня родительского класса, игрок сможет взять этот класс. (Прочтите описание "макс.ур" для подробностей)'),
+		new ListValue('Необходимо право', 'needs-permission', ['True', 'False'], 'False').setTooltip('Определяет нужно ли игроку иметь отдельное право для этого класса чтобы выбрать его. Право выглядит так: "skillapi.class.{className}", Где {className] - Имя класса'),
+    new ByteListValue('Источники опыта', 'exp-source', [ 'Mob', 'Block Break', 'Block Place', 'Craft', 'Command', 'Special', 'Exp Bottle', 'Smelt', 'Quest' ], 273).setTooltip('Источники с которых данный класс получает опыт. Многие работают только если "use-exp-orbs" включён в config.yml.'),
+		new AttributeValue('Нач. Кол-во ХП', 'health', 20, 0).setTooltip('Начальное количество жизней класса'),
+		new AttributeValue('Нач Кол-во МП', 'mana', 20, 0).setTooltip('Начальное количество маны класса'),
+		new DoubleValue('Регенерация маны', 'mana-regen', 1, 0).setTooltip('Количество маны восстанавливаемое за каждый тик регенерации. Базовый интервал указан в config.yml и по умолчанию имеет 1 секунду. Вы можете указывать десятые и сотые доли в Scale на которые будет увеличиваться регенерация каждый уровень.'),
+		new ListValue('Тип Древа скиллов', 'tree', [ 'Basic Horizontal', 'Basic Vertical', 'Level Horizontal', 'Level Vertical', 'Flood', 'Requirement' ], 'Requirement'),
 		new StringListValue('Skills (one per line)', 'skills', []).setTooltip('The skills the class is able to use'),
-		new ListValue('Icon', 'icon', getMaterials, 'Jack O Lantern').setTooltip('The item that represents the class in GUIs'),
-		new IntValue('Icon Data', 'icon-data', 0).setTooltip('The data/durability value of the item that represents the class in GUIs'),
+		new ListValue('Icon', 'icon', getMaterials, 'Jack O Lantern').setTooltip('Предмет который будет отображаться в GUI для этого класса'),
+		new IntValue('Модель/Прочность', 'icon-data', 0).setTooltip('Определяет модель (CustomModelData 1.14+) или прочность (<1.13) для иконки отображаемой в GUI'),
 		new StringListValue('Icon Lore', 'icon-lore', [
 			'&d' + name
 		]),
-		new StringListValue('Unusable Items', 'blacklist', [ ]).setTooltip('The types of items that the class cannot use (one per line)'),
-		new StringValue('Action Bar', 'action-bar', '').setTooltip('The format for the action bar. Leave blank to use the default formatting.')
+		new StringListValue('Ограниченные предметы', 'blacklist', [ ]).setTooltip('Типы предметов которые класс не может использовать (Один тип в одну линию)'),
+		new StringValue('Action Bar', 'action-bar', '').setTooltip('Формат Action Bar для этого класса, оставьте пустым для использования стандартного формата (из config.yml)')
 	];
     
     this.updateAttribs(10);
